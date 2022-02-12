@@ -3,12 +3,25 @@ import React, { useEffect, useState } from "react";
 function Question({ question, onAnswered }) {
   const [timeRemaining, setTimeRemaining] = useState(10);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setTimeRemaining(timeRemaining => timeRemaining - 1)
-    }, 1000)
-    return clearTimeout(timer)
-  }, [timeRemaining])
+useEffect(() => {
+  const timer = setTimeout(() => {
+    setTimeRemaining((timeRemaining) => {
+      return timeRemaining - 1
+    })
+  }, 1000)
+  
+  
+  if(timeRemaining === 0) {
+    setTimeRemaining(10)
+    onAnswered(false)
+  }
+  return function () {
+    clearTimeout(timer)
+  } 
+
+}, [timeRemaining, onAnswered])
+
+
 
   function handleAnswer(isCorrect) {
     setTimeRemaining(10);
